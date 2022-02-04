@@ -64,6 +64,7 @@ Possible extensions to dashboard and data viz
 - Group data into different bins (drop down menu)         
 - Update scatter charts with user-defined selection of data variables      
 - Enable regex and wildcard search string in search bar of table to allow users to search for a broader range of data more quickly           
+- Extend popup info from tooltip in map to display alternative info or charts/data viz within popups for each location e.g. hovering on data point in map displays tooltip info while clicking on data point displays a weblink to the artist homepage or a chart exploring a different variable in the data        
 
 ******  
 
