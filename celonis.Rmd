@@ -192,8 +192,7 @@ bscols(widths = c(12,6,6),
        ),
        list(
          leaflet(sd2, width = "100%", height = 400) %>% 
-           # addTiles() %>%
-           addTiles(custom_tile) %>%
+           addTiles() %>%
            setView(setview[1],setview[2],zoom=1) %>% 
            addCircleMarkers(
              lng = sd2$data()[, "X"] %>% jitter(5),
@@ -204,11 +203,7 @@ bscols(widths = c(12,6,6),
              label = popup_func(sd2$data()), # paste(sd2$data()[,"City"]),
              labelOptions = text_label_opt, popupOptions = text_label_opt
            ) %>% 
-           # addProviderTiles(
-           # #   # "CartoDB.DarkMatter"
-           #   "Stamen.TonerLite"
-           # #   "Stadia.AlidadeSmooth"
-           # ) %>%
+           addProviderTiles("Stamen.TonerLite") %>%
            addControl(heading_tr,"topright") %>%
            addEasyButton(reset_zoom)
        ),
