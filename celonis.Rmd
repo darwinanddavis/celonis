@@ -203,7 +203,9 @@ bscols(widths = c(12,6,6),
              label = popup_func(sd2$data()), # paste(sd2$data()[,"City"]),
              labelOptions = text_label_opt, popupOptions = text_label_opt
            ) %>% 
-           addProviderTiles("Stamen.TonerLite") %>%
+           addProviderTiles(
+             "Stamen.TonerLite"
+           ) %>%
            addControl(heading_tr,"topright") %>%
            addEasyButton(reset_zoom)
        ),
@@ -220,6 +222,7 @@ bscols(widths = c(12,6,6),
                    width = "100%", height = 200)
        )
 )
+
 
 ```
 
