@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Top 20 songs (1960-2000)</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="//unpkg.com/d3"></script>
+        <script href="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+        <script href="https://d3js.org/d3-scale-chromatic.v1.min.js" charset="utf-8"></script>
+        <link rel="stylesheet" type="text/css" src="https://fonts.googleapis.com/css?family=Open+Sans:400,600"/>
+        <link rel="stylesheet" type="text/css" href="css/style.css"/>
+  </head>
+  <body>
+    <h3>
+      Select criteria
+    </h3>
+
+    <!-- buttons -->
+    <div class="controls">
+      <button data-name="energy">Energy</button>
+      <button data-name="tempo">Tempo</button>
+      <button data-name="danceability">Danceability</button>
+      <button data-name="liveness">Liveness</button>
+      <br><br><br>
+    </div>
+
+    <!-- chart area -->
+    <div class="bar-chart-container"></div>
+
+    <!-- tooltip base -->
+    <div class="tooltip">
+      <div class="tip-header">
+        <h3></h3>
+        <h4></h4>
+      </div>
+      <div class="tip-body"></div>
+    </div>
+
+    <!-- load js -->
+    <script src="app.js"></script>
+  </body>
+</html>
+

@@ -1,0 +1,230 @@
+---
+params:
+  title: "50 years of hits: exploring the top 20 songs by artist (1960-2000)"  
+  author: "Matt Malishev"
+  social: "@darwinanddavis"    
+  primary: "#5B3794"
+  secondary: "#EFEFEF"
+  imgdir: "plots"
+  github: "https://github.com/darwinanddavis/misc/tree/gh-pages/celonis"      
+output: 
+  html_document:
+    theme: "cosmo"
+    css: css/style.css
+    includes:
+      in_header: header.html
+      after_body: footer.html
+---
+
+<!-- css for tabs -->
+<style type="text/css">
+
+.nav>li>a{
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+}
+
+.nav-pills>li>a:hover{
+  background: `r params$primary`;
+  color: `r params$secondary`;
+  opacity:0.7;
+}
+
+.nav-pills>li>a:focus, .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
+  background: `r params$primary`;
+  background-color: `r params$primary`;
+}
+
+</style>
+
+```{r, set-options, echo = F, cache = T, message=F}
+options(width=25,tinytex.verbose = TRUE, width.cutoff=25)
+knitr::opts_chunk$set(
+ eval = F, # run all code
+ echo = F, # show code chunks in output 
+ tidy = T, # make output as tidy
+ message = F,  # mask all messages
+ warning = F, # mask all warnings 
+ size="small", # set code chunk size,
+ tidy.opts=list(width.cutoff=25) # set width of code chunks in output
+)
+
+# tinytex::install_tinytex()
+# require(tinytex)
+# install.packages("pacman")
+# require(pacman)
+```
+
+# <span style="font-size: 200%;">`r params$title`</span> {.tabset .tabset-fade .tabset-pills}  
+
+\  
+
+<!-- tab break --------------------------------------------- -->
+## Dashboard 1  
+
+<span font-size: 1.5em;> 
+<br>
+  Ranking artist and song. Explore ranked data of artist based on energy, tempo, danceability, and liveness.  
+  </span>   
+```{r, eval=T, echo = F}
+htmltools::includeHTML("index.html")
+```
+
+
+<!-- tab break --------------------------------------------- -->
+## Dashboard 2
+
+<span font-size: 1.5em;>
+<br>
+  Deep dive into data patterns. Find correlations between song energy and loudness/tempo linked to song rank, decade, and song/artist location.   
+  <br>
+  Use the slider to define rank, checkboxes to limit decade, and plots/map to select data windows (brush). The table at the bottom displays further info on the selected data for further snapshot comparisons.       
+  </span>   
+```{r, echo=F, warning=F}
+# read data  
+suppressWarnings(pacman::p_load(networkD3,dplyr,jsonlite,ggplot2,colorspace,readr,stringr,scales,d3scatter,crosstalk,leaflet,tibble,httpuv,DT,htmltools,geosphere,rnaturalearthdata,rnaturalearth,mapdata,sf))
+fh <- "songs.json"
+df <- jsonlite::fromJSON(fh)
+```
+
+
+```{r, echo=F, warning=F}
+# create datasets 
+
+require(geosphere)
+require(leaflet)
+require(rnaturalearthdata)
+require(rnaturalearth)
+require(maps)
+require(sf)
+
+# create crosstalk df
+sd <- SharedData$new(df)
+
+# map city data 
+countries <- sd$data()[,"Country"] %>% unique 
+cities <- sd$data()[,"City"] %>% unique
+
+# get latlons for df$City
+data(world.cities) # /maps
+world_cities <- world.cities 
+city_df <- world_cities %>% 
+  dplyr::filter(country.etc %in% c(countries,"USA","UK"), 
+                name %in% c(cities,"Goteborg")) %>% 
+  # distinct(name, .keep_all = T) %>%
+  dplyr::select(Y = lat,
+                X = long,
+                City = name, 
+                Country = country.etc) %>% 
+  left_join(sd$data(), by = "City", suffix=c(".x",".y")) %>%
+  select(-ends_with(".x"),-ends_with(".y"))
+
+city_df <- city_df[!duplicated(city_df[c("City","Country"),]),] # remove duplicates (inaccurate)  
+
+# create new crosstalk df with latlon for df$City
+sd2 <- SharedData$new(city_df)
+
+```
+
+```{r, echo=F, warning=F}
+# map params 
+var1 <- "Rank"
+xlab <- "ENERGY"
+colt <- "#5B3794"
+colf <- "#F8DCD9"
+colv <- colt
+opac <- 0.9
+ttl <- "Top 20 songs per city"
+custom_tile <- "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
+
+setview <- c(0,0)
+
+style <- list("color" = colv,"font-weight" = "normal","padding" = "8px")
+text_label_opt <- labelOptions(noHide = F, direction = "top", textsize = "10px",
+                               textOnly = F, opacity = 0.7, offset = c(0,0),
+                               style = style, permanent = T
+)
+
+heading_tr <- paste0(
+    "<span style=color:",colt,";> ",ttl," </span><br>",
+    "Hover over locations for more info"
+) 
+
+popup_func <- function(d) paste0("<strong><span style=color:",colt,";>",d %>% pull(City),"</span></strong><br/><br/>",
+                                 "<strong>","Artist: ","</strong><span>", d %>% pull(Artist),"</span><br/>",
+                                 "<strong>","Song: ","</strong><span>", d %>% pull(Name),"</span><br/>",
+                                 "<strong>","Decade: ","</strong><span>", d %>% pull(Decade),"'s</span><br/>",
+                                 "<strong>",var1,": </strong><span>", d %>% pull(var1),"</span><br/>") %>% purrr::map(htmltools::HTML)
+
+# easy buttons 
+locate_me <- easyButton( # locate user
+  icon="fa-crosshairs", title="Zoom to my position",
+  onClick=JS("function(btn, map){ map.locate({setView: true}); }"));
+
+reset_zoom <- easyButton( # reset zoom 
+  icon="fa-globe", title="Reset zoom",
+  onClick=JS("function(btn, map){ map.setZoom(3);}"));  
+
+map_control_box <- htmltools::tags$style( 
+  htmltools::HTML(".leaflet-control.layers-base { 
+                  text-align: left;
+                  padding-left: 10px; 
+                  padding-right: 10px; 
+                  background: white; opacity: 1;
+                  font-size: 20px;
+                  }"
+       ))
+
+control_box <- htmltools::tags$div(
+  map_control_box, htmltools::HTML("")
+)  
+
+```
+
+```{r, echo=F, warning=F}
+# build crosstalk 
+
+bscols(widths = c(12,6,6),
+       list(
+         filter_slider("rank", "Rank", sd2, ~Rank, step = 1, pre = "Rank "),
+         filter_checkbox("Decade", "Decade", sd2, ~paste0(Decade,"'s"), inline = T)
+       ),
+       list(
+         leaflet(sd2, width = "100%", height = 400) %>% 
+           # addTiles() %>%
+           addTiles(custom_tile) %>%
+           setView(setview[1],setview[2],zoom=1) %>% 
+           addCircleMarkers(
+             lng = sd2$data()[, "X"] %>% jitter(5),
+             lat = sd2$data()[, "Y"] %>% jitter(5), 
+             color = colt, fillColor = colt, radius = ~Rank, 
+             opacity = opac, fill = T, stroke = T, weight = 1,
+             popup = popup_func(sd2$data()),
+             label = popup_func(sd2$data()), # paste(sd2$data()[,"City"]),
+             labelOptions = text_label_opt, popupOptions = text_label_opt
+           ) %>% 
+           # addProviderTiles(
+           # #   # "CartoDB.DarkMatter"
+           #   "Stamen.TonerLite"
+           # #   "Stadia.AlidadeSmooth"
+           # ) %>%
+           addControl(heading_tr,"topright") %>%
+           addEasyButton(reset_zoom)
+       ),
+       list(
+         d3scatter(sd2, ~energy, ~loudness, color = ~Rank, width = "100%", height = 200,x_label = xlab, y_label = "LOUDNESS"),
+         d3scatter(sd2, ~energy, ~tempo, color = ~Rank,width = "100%", height = 200,x_label = xlab, y_label = "TEMPO")
+       ),
+       list(
+         datatable(sd2, rownames = F,autoHideNavigation = T, fillContainer = F,
+                   class="compact", extensions="Scroller",
+                   options=list(deferRender=T, scrollY = 200, scrollX = 100, scroller=T,
+                                pageLength = 5, autoWidth = T),
+                   style = "bootstrap",
+                   width = "100%", height = 200)
+       )
+)
+
+```
+

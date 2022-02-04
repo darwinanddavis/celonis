@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1643950931134.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "8204070F",
+    "lastKnownWriteTime" : 1643950968,
+    "last_content_update" : 1643950968496,
+    "path" : "~/Documents/Data/celonis/celonis.Rmd",
+    "project_path" : "celonis.Rmd",
+    "properties" : {
+        "cursorPosition" : "191,9",
+        "scrollLine" : "186"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

@@ -1,0 +1,153 @@
+
+/* set main container for parallax  ---------------- */
+.main-container {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* set remaining text content container  ---------------- */
+.mycontent{
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 130%;
+      line-height: 1.7;
+      padding-right: 15px;
+      padding-left: 15px;
+}
+
+body{
+  background: #FCFBFF;
+  font-family: 'Avenir', sans-serif;
+}
+
+h1{
+  font-size: 1.2em;
+  text-align: center;
+}
+
+
+h3 {
+  font-size: 1em;
+  color: #5B3794;
+}
+
+h4 {
+  font-size: 0.9em;
+  color: #555;
+  margin: 0;
+  font-weight: normal;
+}
+
+a{
+  color: #5B3794;
+  background: none; 
+}
+
+a:hover{ 
+  color: #5B3794;
+  background: none; 
+}
+
+img{
+  border: 2px solid #5B3794;
+  vertical-align: middle;  
+}
+
+.right-just {
+  text-align: right; 
+  vertical-align: middle;  
+}
+
+.remove-border {
+  border: none;
+}
+
+/* general  ---------------- */
+svg {
+  /*border: 1px solid #5B3794;*/
+}
+
+.axis .domain {
+  stroke: none;
+}
+
+.x .tick line {
+  stroke: white;
+}
+
+/* bttons */
+button {
+  outline: none;
+  color: #000;
+  border-color: #eee;
+  background: #fff;
+  padding: 10px 20px;
+  font-family: Avenir;
+  transition: all 200ms;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #5B3794;
+}
+
+button:focus {
+  background: #5B3794;
+}
+
+/* tooltip css  ---------------- */
+.tooltip {
+  position: fixed;
+  opacity: 0;
+  pointer-events: none;
+  background: #eee;
+  max-width: 200px;
+}
+
+.tip-header {
+  border-bottom: 2px solid white;
+  padding: 0.9rem 1rem;
+}
+
+.tip-body {
+  padding: 0.2rem 0;
+}
+
+.tip-info {
+  margin: 0;
+  padding: 0.3rem 1em;
+  font-size: 0.8em;
+}
+
+.tip-info:nth-of-type(even) {
+  background: #e0e0e0;
+}
+
+/* crosstalk style ---------------- */
+.crosstalk-input-slider, .irs-grid-text .irs-text{
+  color: #5B3794;
+  font-family: Avernir;
+}
+.js-irs-0 .irs-single, .js-irs-0 .irs-bar-edge, .js-irs-0 .irs-bar {
+  color: #5B3794;
+  background: #5B3794;
+  border-top: 1px solid #5B3794;
+  border-bottom: 1px solid #5B3794;
+}
+
+
+table td:hover {
+background-color: #5B3794;
+opacity: 0.8;
+}
+
+
+/* feather icons ---------------- */
+.arrow {
+  width: 100px;
+  height: 100px;
+  color: #5B3794;
+}
+
