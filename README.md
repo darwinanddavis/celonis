@@ -1,17 +1,19 @@
 # Celonis Visualization Engineer Challenge  
-### Matt Malishev    
-### @darwinanddavis   
+#### Matt Malishev    
+#### @darwinanddavis   
 
-Landing page      
+### Landing page      
 ![](img/d0.jpg)
 
 <br>  
-Dashboard 1      
-![](img/d1.jpg)  
+
+### Dashboard 1        
+![](img/d1.jpg)    
 
 <br>
-Dashboard 2  
-![](img/d2.jpg)  
+
+### Dashboard 2    
+![](img/d2.jpg)    
 
 
 # [Check out live website](https://darwinanddavis.github.io/celonis/celonis.html)    
