@@ -120,7 +120,7 @@ city_df <- world_cities %>%
   left_join(sd$data(), by = "City", suffix=c(".x",".y")) %>%
   select(-ends_with(".x"),-ends_with(".y"))
 
-city_df <- city_df[!duplicated(city_df[c("City","Country"),]),] # remove duplicates (inaccurate)  
+city_df <- city_df[!duplicated(city_df[c("City","Country"),]),] # remove duplicates (inaccurate)
 
 # create new crosstalk df with latlon for df$City
 sd2 <- SharedData$new(city_df)

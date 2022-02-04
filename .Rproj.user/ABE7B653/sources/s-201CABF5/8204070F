@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "4157518643",
+    "hash" : "0",
     "id" : "8204070F",
-    "lastKnownWriteTime" : 1643951770,
-    "last_content_update" : 1643951770944,
+    "lastKnownWriteTime" : 1643957151,
+    "last_content_update" : 1643957151291,
     "path" : "~/Documents/Data/celonis/celonis.Rmd",
     "project_path" : "celonis.Rmd",
     "properties" : {
-        "cursorPosition" : "194,25",
-        "scrollLine" : "190"
+        "cursorPosition" : "122,35",
+        "scrollLine" : "103"
     },
     "relative_order" : 1,
     "source_on_save" : false,
