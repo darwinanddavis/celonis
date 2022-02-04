@@ -128,7 +128,7 @@ button:focus {
 /* crosstalk style ---------------- */
 .crosstalk-input-slider, .irs-grid-text .irs-text{
   color: #5B3794;
-  font-family: Avernir;
+  font-family: 'Avenir', sans-serif; 
 }
 .js-irs-0 .irs-single, .js-irs-0 .irs-bar-edge, .js-irs-0 .irs-bar {
   color: #5B3794;
